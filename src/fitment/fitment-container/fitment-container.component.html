@@ -1,1 +1,17 @@
-<button (click)="getYears()"> Select vehicle </button>
+<button (click)="requestYears()"> Select vehicle </button>
+
+<div class="container">
+    <p class="item" *ngFor="let year of years$ | async" (click)="requestMakes(year)">{{year}}</p>
+</div>
+
+<div class="container">
+    <p class="item" *ngFor="let make of makes$ | async" (click)="requestModels(make)">{{make}}</p>
+</div>
+
+<div class="container">
+    <p class="item" *ngFor="let model of models$ | async" (click)="requestTrims(model)">{{model}}</p>
+</div>
+
+<div class="container">
+    <p class="item" *ngFor="let trim of trim$ | async">{{trim}}</p>
+</div>

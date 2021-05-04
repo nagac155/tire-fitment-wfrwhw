@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType, createEffect } from '@ngrx/effects';
 import { Observable, of } from 'rxjs';
 import { catchError, map, switchMap} from 'rxjs/operators';
-import { VehicleActions } from '../actions/vehicle.action';
 import { VehicleService } from '../services/vehicle.service';
 
 @Injectable()
@@ -10,13 +9,13 @@ export class RequestVehicleYearEffect {
 
 constructor(
     private actions$: Actions,
-    private regionsService: VehicleService,
+    private VehicleService: VehicleService,
 ) { }
 
 @Effect()
-run$: Observable<any> = createEffect(() => this.actions$.pipe(ofType(VehicleActions.VEHICLE_YEAR_REQUESTED),
-    switchMap((action) => this.regionsService.getVehicleYear().pipe(
-        map((result: any) => createAction(VehicleActions.VEHICLE_YEAR_REQUEST_SUCCEEDED, result)),
-        catchError((error: ErrorEvent) => of(createAction(VehicleActions.VEHICLE_YEAR_REQUEST_FAILED, { error })))),
+run$: Observable<any> = createEffect(() => this.actions$.pipe(ofType('[Fitment] Load Years'),
+    switchMap((action) => this.VehicleService.getVehicleYears().pipe(
+        map((result: any) => ({type: '[Fitment] Load Years Success', payload: result.year})),
+        catchError((error: ErrorEvent) => of({type: '[Fitment] Load Years Fail', payload: error }))),
     )));
 }

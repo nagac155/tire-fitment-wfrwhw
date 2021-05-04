@@ -1,34 +1,52 @@
-import { Component, OnInit } from "@angular/core";
-import { Observable } from "rxjs";
+import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Store } from "@ngrx/store";
+import { VehicleSelectors } from "../store/selectors/vehicle.sectors";
 
 @Component({
   selector: "app-fitment-container",
   templateUrl: "./fitment-container.component.html",
   styleUrls: ["./fitment-container.component.css"]
 })
-export class FitmentContainerComponent implements OnInit {
-  years$: Observable<any>;
+export class FitmentContainerComponent implements OnInit, OnDestroy {
+  years$ = this.vehicleSelectors.getVehicleYears();
+  makes$ = this.vehicleSelectors.getVehicleMakes();
+  models$ = this.vehicleSelectors.getVehicleModels();
+  trim$ = this.vehicleSelectors.getVehicleTrim();
+
+  selectedYear;
+  selectedMake = "Acura";
+  selectedModel = "RDX"
 
   // import the store into the constructor
-  constructor() {}
-
-  ngOnInit() {}
-
-  getYears() {
-    console.log("getYears");
-
-    // dispatch an action to get array of years
-
-    // Year
-    // https://6080be3273292b0017cdbf2a.mockapi.io/years
+  constructor(
+    public vehicleSelectors: VehicleSelectors,
+    private store: Store<any>
+  ) {
+  }
+  ngOnInit() {
+    //No API calls are needed on component initaialization.
   }
 
-  // Make with year (2021)
-  // https://6080be3273292b0017cdbf2a.mockapi.io/makes
+  ngOnDestroy() {
+    //async pipe handles unsubscribes automatically, when the component is destroyed.
+  }
 
-  // Model with year and make (Acura)
-  // https://6080be3273292b0017cdbf2a.mockapi.io/models
+  requestYears() {
+    this.store.dispatch({type: '[Fitment] Load Years'});
+  }
 
-  // Trim with year, make, model (RDX)
-  // https://6080be3273292b0017cdbf2a.mockapi.io/trim
+  requestMakes(year: string) {
+    this.selectedYear = year;
+    this.store.dispatch({type: '[Fitment] Load Makes', payload: {year: this.selectedYear}})
+  }
+
+  requestModels(make: string) {
+    this.selectedMake = make;
+    this.store.dispatch({type: '[Fitment] Load Models', payload: {year: this.selectedYear, make: this.selectedMake}})
+  }
+
+  requestTrims(model: string) {
+    this.selectedModel = model;
+    this.store.dispatch({type: '[Fitment] Load Trim', payload: {year: this.selectedYear, make: this.selectedMake, model: this.selectedModel}})
+  }
 }
