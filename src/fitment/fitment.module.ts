@@ -12,21 +12,10 @@ import { HttpClientModule } from "@angular/common/http";
 import { EffectsModule } from "@ngrx/effects";
 import { RequestVehicleYearEffect } from "./store/effects/vehicle-year.effect";
 import { reducer } from "./store/reducers/vehicle.reducer";
-import { storeFreeze } from 'ngrx-store-freeze';
-import { storeLogger } from 'ngrx-store-logger';
 import { RequestVehicleMakeEffect } from "./store/effects/vehicle-make.effect";
 import { RequestVehicleModelEffect } from "./store/effects/vehicle-model.effect";
 import { RequestVehicleTrimEffect } from "./store/effects/vehicle-trim.effect";
 
-
-export function logger(reducer): any {
-  return storeLogger({
-    collapsed: true,
-    duration: false,
-    timestamp: false,
-  })(reducer);
-}
-const metaReducers = [storeFreeze, logger];
 
 @NgModule({
   imports: [CommonModule, 

@@ -17,7 +17,6 @@ export class FitmentContainerComponent implements OnInit, OnDestroy {
   selectedMake = "Acura";
   selectedModel = "RDX"
 
-  // import the store into the constructor
   constructor(
     public vehicleSelectors: VehicleSelectors,
     private store: Store<any>
